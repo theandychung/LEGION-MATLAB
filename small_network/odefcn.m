@@ -1,4 +1,4 @@
-function dydt = odefcn2(t,y)
+function dydt = odefcn(t,y)
 
 input=0.11;
 eta=0.35;

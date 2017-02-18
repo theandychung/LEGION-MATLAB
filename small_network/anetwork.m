@@ -8,10 +8,10 @@ rng('default')
 % gamma=2.1;
 % beta=0.1;
 		
-tspan = [0 400];
+tspan = [0 200];
 y0=[0 0 0 0 0 0 0 0 0];
 %% draw
-[t,y] = ode45(@(t,y) odefcn2(t,y),tspan,y0);
+[t,y] = ode45(@(t,y) odefcn(t,y),tspan,y0);
 figure
 subplot(1,2,1)
 plot(t,y(:,2),'-',t,y(:,3),'-.')
