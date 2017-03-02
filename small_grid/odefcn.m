@@ -28,7 +28,7 @@ theta_2 = 1/(2*N_t);
 %% calculation
 % dx/dt
 for i = num_z+1:2:num_x*2+num_z
-    s = reshape(J_prev{(i-1)/2},1,[])*S(y(i),theta_x)-w1*S(y(1),theta_1)-w2*S(y(2),theta_2);
+    s = sum(reshape(J_prev{(i-1)/2},1,[])*S(y(i),theta_x))-w1*S(y(1),theta_1)-w2*S(y(2),theta_2);
     dydt(i) = 3.*y(i)-y(i).^3+2-y(i+1)+input+s((i-1)/2)+0.5*randn(4,1);
     dydt(i+1) = eta.*(gamma.*(1+tanh(y(i)./beta))-y(i+1));
 end
