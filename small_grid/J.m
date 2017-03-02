@@ -1,4 +1,4 @@
-function J_new = J( x, J_old )
+function J_new = J( x, J_old, theta)
 %Dynamic Connection Weights
 
 %% dummy proof 
@@ -20,13 +20,18 @@ for i = 1:xR
         Jtemp{i,j} = zeros(xR, xC);
     end
 end
+
 %%
 for xi_f = 1:xR
     for xi_t = 1:xC
         for r = 1:xR
             for c = 1:xC
-                DJ = eta*T(xi_f, xi_t, r, c)*(x(r,c)>theta)*(x(r,c)>theta);
-                Jtemp{xi_f,xi_t}(r,c)=J_old{xi_f,xi_t}(r,c)+DJ;
+                if xi_f==r & xi_t==c
+                    Jtemp{xi_f,xi_t}(r,c) = 0;
+                else
+                    DJ = eta*T(xi_f, xi_t, r, c)*(x(r,c)>theta)*(x(r,c)>theta);
+                    Jtemp{xi_f,xi_t}(r,c)=J_old{xi_f,xi_t}(r,c)+DJ;
+                end
             end
         end
         J_new{xi_f,xi_t} = W_T.*Jtemp{xi_f,xi_t}./(sum(Jtemp{xi_f,xi_t}(:))+c);

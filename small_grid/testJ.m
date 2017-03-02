@@ -10,3 +10,4 @@ for i = 1:xR
     end
 end
 J_new=J(x,J_old);
+J_new=J(x,J_new);
