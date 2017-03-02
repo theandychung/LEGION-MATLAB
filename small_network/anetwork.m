@@ -19,7 +19,7 @@ subplot(1,2,2)
 plot(y(:,2),y(:,3))
 suptitle('1st Oscillator')
 figure
-% set(gca,'Position',[.05 .05 .9 .9])
+
 total_subplots=(size(y,2)-1)/2+1;
 subplot(total_subplots,1,1)
 plot(t,y(:,1))

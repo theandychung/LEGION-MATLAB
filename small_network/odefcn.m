@@ -1,4 +1,6 @@
 function dydt = odefcn(t,y)
+% y(1) = z
+% y(2) and after = x
 
 input=0.11;
 eta=0.35;
@@ -21,7 +23,7 @@ w = [
     1 0 0 0
     0 0 0 0
     0 0 0 0
-    ]*0.3;%segregated
+    ]*0.3; %segregated
 
 tol_neurons=(size(y,1)-1)/2;
 dydt = zeros(size(y,1),1);
