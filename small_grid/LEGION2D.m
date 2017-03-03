@@ -7,7 +7,7 @@ clc
 % gamma=2.1;
 % beta=0.1;
 
-tspan = [0 200];
+tspan = [0 50];
 global grid_r
 grid_r = 3;  % grid width
 grid_c = 3;  % grid length
@@ -31,7 +31,23 @@ y0= zeros(1,tol_channels);
 [t,y] = ode45(@(t,y) odefcn(t,y),tspan,y0);
 figure
 subplot(1,2,1)
-plot(t,y(:,2),'-',t,y(:,3),'-.')
+plot(t,y(:,3),'-',t,y(:,4),'-.')
+xlim(tspan)
 subplot(1,2,2)
-plot(y(:,2),y(:,3))
+plot(y(:,3),y(:,4))
 suptitle('1st Oscillator')
+xlim([-2.5,2])
+
+figure
+subplot(4,1,1)
+plot(t,y(:,1),'b-',t,y(:,2),'r-')
+title('Global Inhibitor Activity')
+subplot(4,1,2)
+plot(t,y(:,3),t,y(:,5),t,y(:,7))
+title('1st-3rd X Activity')
+subplot(4,1,3)
+plot(t,y(:,9),t,y(:,11),t,y(:,13))
+title('4th-6th X Activity')
+subplot(4,1,4)
+plot(t,y(:,15),t,y(:,17),t,y(:,19))
+title('7th-9th X Activity')
