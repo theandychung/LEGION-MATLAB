@@ -1,42 +1,45 @@
-function J_new = J( x, J_old, theta, t_passed)
+function Jtemp = J( x, J_old,h)
 %Dynamic Connection Weights
 
-%% dummy proof 
-if(size(x)~=size(J_old))
-    return
-end
+
 %% initialization
 W_T = 1;
 eta = 1;
-theta = 0;
-c = .00000000001;
-
+c = 1E-99;
 [xR,xC] = size(x);
-J_new=cell(xR,xC);
 Jtemp=cell(xR,xC);
 for i = 1:xR
     for j = 1:xC
-        J_new{i,j} = zeros(xR, xC);
-        Jtemp{i,j} = zeros(xR, xC);
+        Jtemp{i,j} = zeros(1, 4);
     end
 end
 
 %%
 for xi_f = 1:xR
     for xi_t = 1:xC
-        for r = 1:xR
-            for c = 1:xC
-                if xi_f==r & xi_t==c
-                    Jtemp{xi_f,xi_t}(r,c) = 0;
-                else
-                    DJ = eta*T(xi_f, xi_t, r, c)*((x(r,c)/t_passed)>theta)*((x(r,c)/t_passed)>theta);
-                    Jtemp{xi_f,xi_t}(r,c)=J_old{xi_f,xi_t}(r,c)+DJ;
-                end
-            end
+        %up
+        if(xi_f-1>0)
+            DJ = eta*T(xi_f, xi_t, xi_f-1, xi_t) * h(xi_f,xi_t) * h(xi_f-1, xi_t);
+            Jtemp{xi_f,xi_t}(1)=J_old{xi_f,xi_t}(1)+DJ;
         end
-        J_new{xi_f,xi_t} = W_T.*Jtemp{xi_f,xi_t}./(sum(Jtemp{xi_f,xi_t}(:))+c);
+        %down
+        if(xi_f+1<xR)
+            DJ = eta*T(xi_f, xi_t, xi_f+1, xi_t) * h(xi_f,xi_t) * h(xi_f+1, xi_t);
+            Jtemp{xi_f,xi_t}(2)=J_old{xi_f,xi_t}(2)+DJ;
+        end
+        %left
+        if(xi_t-1>0)
+            DJ = eta*T(xi_f, xi_t, xi_f, xi_t-1) * h(xi_f,xi_t) * h(xi_f, xi_t-1);
+            Jtemp{xi_f,xi_t}(3)=J_old{xi_f,xi_t}(3)+DJ;
+        end
+        %right
+        if(xi_t+1<xC)
+            DJ = eta*T(xi_f, xi_t, xi_f, xi_t+1) * h(xi_f,xi_t) * h(xi_f, xi_t+1);
+            Jtemp{xi_f,xi_t}(4)=J_old{xi_f,xi_t}(4)+DJ;
+        end
+        Jtemp{xi_f,xi_t} = W_T.*Jtemp{xi_f,xi_t}./(sum(Jtemp{xi_f,xi_t}(:))+c);
     end
 end
 
-
 end
+    

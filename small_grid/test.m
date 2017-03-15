@@ -1,8 +1,8 @@
 function dydt = test( t, y)
-t
-global JJ
-JJ=JJ+1
-dydt=2*t;
-
+dydt=testme(t);
 end
 
+function dd = testme(x)
+dd=x+5;
+disp('here')
+end

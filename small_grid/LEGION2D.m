@@ -1,5 +1,5 @@
 clear
-% close all
+close all
 clc
 %% Define Parameters
 % input=0.11;
@@ -7,14 +7,13 @@ clc
 % gamma=2.1;
 % beta=0.1;
 
-tspan = [0 50];
-global grid_r
+tspan = [0 60];
+global grid_r grid_c
 grid_r = 3;  % grid width
 grid_c = 3;  % grid length
 %% initialization
 rng('default') 
-global num_x num_z J_prev t_prev
-t_prev = 0;
+global num_x num_z J_prev 
 num_z = 2;  % global inhibitor
 num_x = grid_c*grid_r;
 % num_J = num_x^2;
@@ -27,8 +26,14 @@ for i = 1:grid_r
     end
 end
 y0= zeros(1,tol_channels);
+
+global t_p x_sum
+t_th = 5.6;
+t_p = 0;
+x_sum = zeros(grid_r*grid_c,1);
 %% draw
-[t,y] = ode45(@(t,y) odefcn(t,y),tspan,y0);
+u=0;
+[t,y] = ode45(@(t,y) odefcn(t,y,u,t_th),tspan,y0);
 figure
 subplot(1,2,1)
 plot(t,y(:,3),'-',t,y(:,4),'-.')

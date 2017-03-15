@@ -1,11 +1,10 @@
-function dydt = odefcn(t,y)
+function dydt = odefcn(t,y,u,t_th)
 % y is a 1*N matrix
 %% Define Parameters
 input=0.11;
 epsilon=0.35;
 gamma=3.0;
 beta=0.1;
-
 w1 = 0.5;
 w2 = 0.5;
 global kappa grid_r
@@ -18,8 +17,7 @@ theta = 0.1; %threshold for DJ
 phi = 3; %the rate at which the inhibitor reacts to the stimulation.
 rho = 0.5; %amplitude of gaussian noise
 %% initialization
-global num_z J_prev t_prev num_x
-t_passed = t - t_prev;
+global num_z J_prev num_x
 dydt = zeros(size(y,1),1);
 % z = y(1:num_z);
 % x = y(num_z+1:2:num_x*2+num_z);
@@ -41,8 +39,19 @@ dydt(1) = phi*(sigma_infty-y(1));
 dydt(2) = phi*(sigma_naught/N_t-y(2));
 
 % new J and t
-J_prev = J(reshape(y(num_z+1:2:end),grid_r,[]),J_prev,theta,t_passed);
-t_prev = t
+%if the first oscillator's y activity is less than 0.5 and
+% t_p is less than a certain value, make the count as the new temperol 
+% average's time
+global t_p x_sum
+t_p = [t_p t];
+x = y(num_z+1:2:end);
+x_sum = [x_sum x];
+TF = t-t_p(1,:)>t_th;
+t_p(:,TF)=[];
+x_sum(:,TF)=[];
 
+h = sum(x_sum,2)./length(x_sum)>theta; % h(xi)
+J_prev = J(reshape(x,grid_r,[]),J_prev, reshape(h,grid_r,[]));
+t
 end
 
