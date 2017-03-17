@@ -1,7 +1,8 @@
 function dydt = odefcn(t,y,u,t_th)
 % y is a 1*N matrix
 %% Define Parameters
-input=0.11;
+delay = 1;
+input = inp_func(u,t, delay);
 epsilon=0.35;
 gamma=3.0;
 beta=0.1;
@@ -29,7 +30,7 @@ theta_2 = 1/(2*N_t);
 
 for i = num_z+1:2:num_x*2+num_z
     s = sum(reshape(J_prev{(i-1)/2},1,[])*S(y(i),theta_x))-w1*S(y(1),theta_1)-w2*S(y(2),theta_2);
-    dydt(i) = 3.*y(i)-y(i).^3+2-y(i+1)+input+s+rho*randn(1,1);
+    dydt(i) = 3.*y(i)-y(i).^3+2-y(i+1)+input((i-1)/2)+s+rho*randn(1,1);
     dydt(i+1) = epsilon.*(gamma.*(1+tanh(y(i)./beta))-y(i+1));
 end
 % dz/dt
@@ -53,5 +54,8 @@ x_sum(:,TF)=[];
 h = sum(x_sum,2)./length(x_sum)>theta; % h(xi)
 J_prev = J(reshape(x,grid_r,[]),J_prev, reshape(h,grid_r,[]));
 t
+end
+function out = inp_func(u,t, delay)
+out = u;
 end
 
