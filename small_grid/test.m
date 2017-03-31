@@ -1,7 +1,8 @@
-function dydt = test( t, y, u)
-dydt=y*2+inp_func(u,t,2);
-end
-function out = inp_func(u,t, d)
-out = interp1(u,t,d)
-out = [
-end
+clc;clear
+ttt.a=[1,2,3;2,3,4]
+ttt.b=[1,2,4];
+A = 1;
+B = 2;
+tspan = [0 5];
+y0 = [0 0.01];
+[t,y] = ode45(@(t,y) odefcnxx(t,y,A,B,ttt,ttt.a), tspan, y0);
