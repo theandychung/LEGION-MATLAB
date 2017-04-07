@@ -1,6 +1,5 @@
 function Jtemp = J(J_old,h,W_T,eta, sigma_t, sigma_f)
-%Dynamic Connection Weights
-
+% Dynamic Connection Weights
 
 %% initialization
 c = 1E-99;

@@ -11,11 +11,18 @@ dydt = zeros(size(y,1),1);
 % j2 = (u.num_x*3+u.num_z+1:u.num_x*4+u.num_z);
 %% calculation
 % dx/dt dy/dt
+% global sall
+s=zeros(1,12);
 for i = u.num_z+1:2:u.num_x*2+u.num_z
-    s = sum(reshape(J_prev{(i-1)/2},1,[])*S(y(i),u.theta_x,u.kappa))-u.W1*S(y(1),u.theta_1,u.kappa)-u.W2*S(y(2),u.theta_2,u.kappa);
-    dydt(i) = 3.*y(i)-y(i).^3+2-y(i+1)+input((i-1)/2)+s+u.rho*randn(1,1);
+    s((i-1)/2) = sum(J_prev{(i-1)/2}.*S(y(i),u.theta_x,u.kappa))-u.W1*S(y(1),u.theta_1,u.kappa)-u.W2*S(y(2),u.theta_2,u.kappa);
+%     -u.W1*S(y(1),u.theta_1,u.kappa)
+% if i == u.num_z+1
+%     sall=[sall s];
+% end
+    dydt(i) = 3.*y(i)-y(i).^3+2-y(i+1)+input((i-1)/2)+s((i-1)/2)+u.rho*randn(1,1);
     dydt(i+1) = u.epsilon.*(u.gamma.*(1+tanh(y(i)./u.beta))-y(i+1));
 end
+s=reshape(s,u.grid_r,[]);
 % dz/dt
 sigma_naught = sum(y(u.num_z+1:2:end)>=u.theta_z); %the number of oscillators whose x activities are >= theta_z.
 sigma_infty = sigma_naught>0; % =1 if at least one oscillator >= theta_z

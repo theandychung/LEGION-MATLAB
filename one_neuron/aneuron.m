@@ -2,13 +2,20 @@ clear;close all;clc
 % which ode to choose
 % https://www.mathworks.com/help/matlab/math/choose-an-ode-solver.html#bu13kwa
 % 
-u.input=0;
-u.epsilon=.02;
-u.gamma=6.0;
+u.input=.2;
+u.rho = .02;
+u.epsilon=.04;
+u.gamma=9.0;
 u.beta=0.1;
-tspan = [0 900];
+% u.input=0.5;
+% u.epsilon=.2;
+% u.gamma=9.0;
+% u.beta=0.1;
 
-y0=[0 0];
+
+tspan = [0 400];
+
+y0=[-1 0];
 [t,y] = ode45(@(t,y) odefcn(t,y,u),tspan,y0);
 % figure
 subplot(1,2,1)
@@ -27,7 +34,7 @@ p2=plot(y(:,1),y(:,2));
 % p2.LineWidth = 2;
 p2.Marker = '*';
 xlim([-2.5 2.5])
-ylim([-2 8])
+ylim([-2 15])
 xlabel('X Activity')
 ylabel('Y Activity')
 title('Phase Plane')

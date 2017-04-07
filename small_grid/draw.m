@@ -43,9 +43,10 @@ end
 %        'Position', [0 0 0.1 0.1]); 
 %%
 % global u.num_z u.num_x u.grid_r
-start=tspan(2)-1000;
+% start=1000;
+start=0;
 ender=tspan(2);
-
+% ender=2000;
 figure
 subplot(4,1,1);
 plot(t,y(:,1),'b-',t,y(:,2),'r-')
