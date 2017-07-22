@@ -4,11 +4,11 @@ clc
 t0 = clock; % just to time the code
 %% Define Parameters
 theta_a = 0; %for input, 50
-tspan = [0 1000];
+tspan = [0 3000];
 u.input=[1 1 0 0
-         1 1 0 0
+         0 0 0 0
+         0 0 0 0
          0 0 0 1];
-u.delay = 1;%for future
 
 % constants
 u.epsilon = .02;
@@ -26,7 +26,7 @@ u.kappa = 50;
 u.t_th = 7; %for <x>
 u.num_z = 2;  % global inhibitor
 u.eta = 10; %control speed of DJ
-u.W_T = 6; %DJ weights
+u.W_T = 5; %DJ weights
 u.sigma_t = 8.0;
 u.sigma_f = 5.0;
 %% initialization

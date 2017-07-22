@@ -42,23 +42,25 @@ end
 %        'Units','normalized',...
 %        'Position', [0 0 0.1 0.1]); 
 %%
-% global u.num_z u.num_x u.grid_r
+
 % start=1000;
 start=0;
 ender=tspan(2);
 % ender=2000;
+
 figure
-subplot(4,1,1);
+sp1 = subplot(u.grid_r+1,1,1);
 plot(t,y(:,1),'b-',t,y(:,2),'r-')
 xlim([start ender])
 ylabel('Z Activity')
+legend('z1','z2')
 x=2;
-for i = u.num_z+1:2:u.num_x*2+u.num_z
+for a = u.num_z+1:2:u.num_x*2+u.num_z
     if x > u.grid_r+1
         x = 2;
     end
     subplot(u.grid_r+1,1,x);
-    plot(t,y(:,i))
+    plot(t,y(:,a))
     xlim([start ender])
     ylim([-2 2])
     x=x+1;
@@ -66,8 +68,25 @@ for i = u.num_z+1:2:u.num_x*2+u.num_z
     hold on
 end
 xlabel('Time')
-legend('show')
+
+% dynamic legend
+if(~exist('grid_c','var'))
+    grid_c = size(u.input,2);
+end
+strx=cell(1,grid_c);
+for a = 1:grid_c
+    strx{a} = sprintf('Oscillator %d', a);
+end
+legend(strx)
+
+strz = cell(1,u.num_z);
+for a = 1:u.num_z
+    strz{a} = sprintf('Inhibitor z_%d',a);
+end
+legend(sp1,strz);
+
 u.input
+
 % uicontrol('Style', 'text',...
 %        'String', filename,... 
 %        'Units','normalized',...
@@ -77,3 +96,4 @@ u.input
 % text(.08,.45,'X Activities',...
 % 'VerticalAlignment','bottom',...
 % 'HorizontalAlignment','left', 'Rotation', 90)
+
